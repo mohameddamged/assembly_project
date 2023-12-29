@@ -6,7 +6,7 @@
     MSG3 DB "INVALID PASSWORD...........,TRY AGAIN","$"
     PASS DB "12345","$"
     L_PASS DW 5
-    BALANCE DW 50000D
+    BALANCE DW 1000D
     
     ;OPTIONS
     MSG4 DB "1-WITHDRAW           2-DEPOSITE           3-CHCEK BALANCE","$"
@@ -17,6 +17,7 @@
     WITH3 DW 3000D
     WITH4 DW 4000D
     SUCCESS DB "TRANSACTION SUCCESSFULLY, ","$"
+    BAL_LOW DB "YOUR BALANCE IS LESS THAN THIS VALUE","$"
     ;DEPOSITE
     MSG6 DB "1-1000 EGP           2-2000 EGP           3-3000 EGP           4-4000 EGP","$"
     ;CHECK BALANE 
@@ -100,6 +101,9 @@
         CALL PRINTCHAR
         ;READ CHAR
         CALL READCHAR
+        ;PRINT NEW LINE
+        ;MOV DL,LINE
+        ;CALL PRINTCHAR
         CMP AL,31H
         JE OP1
         CMP AL,32H
@@ -110,6 +114,9 @@
         JE OP4
 
     OP1:
+        MOV BX, WITH1
+        CMP BX, BALANCE
+        JG BAL_LOW_ERROR
         MOV BX, BALANCE
         SUB BX, WITH1
         MOV BALANCE, BX
@@ -134,6 +141,9 @@
         .EXIT
         
     OP2:
+        MOV BX, WITH2
+        CMP BX, BALANCE
+        JG BAL_LOW_ERROR
         MOV BX, BALANCE
         SUB BX, WITH2
         MOV BALANCE, BX
@@ -158,6 +168,9 @@
         
         
     OP3:
+        MOV BX, WITH3
+        CMP BX, BALANCE
+        JG BAL_LOW_ERROR
         MOV BX, BALANCE
         SUB BX, WITH3
         MOV BALANCE, BX
@@ -182,6 +195,9 @@
         
         
     OP4:
+        MOV BX, WITH4
+        CMP BX, BALANCE
+        JG BAL_LOW_ERROR
         MOV BX, BALANCE
         SUB BX, WITH4
         MOV BALANCE, BX
@@ -204,7 +220,32 @@
         CALL PRINTSTR
         .EXIT
 
-
+    BAL_LOW_ERROR:
+        ;PRINT NEW LINE
+        MOV DL,LINE
+        CALL PRINTCHAR
+        LEA DX, BAL_LOW
+        CALL PRINTSTR
+        ;PRINT NEW LINE
+        MOV DL,LINE
+        CALL PRINTCHAR
+        ;PRINT DO YOU WANT ANTHOR OPERATION 
+        LEA DX,MSG8
+        CALL PRINTSTR
+        ;PRINT NEW LINE
+        MOV DL,LINE
+        CALL PRINTCHAR
+        ;READ CHAR
+        CALL READCHAR
+        CMP AL,'Y'
+        JE MENU
+        ;PRINT NEW LINE
+        MOV DL,LINE
+        CALL PRINTCHAR
+        ;PRINT THANKS
+        LEA DX,THANKS
+        CALL PRINTSTR
+        .EXIT
         
     DEPOSITE:
             ;PRINT NEW LINE
@@ -217,6 +258,9 @@
         CALL PRINTCHAR
         ;READ CHAR
         CALL READCHAR
+        ;PRINT NEW LINE
+        ;MOV DL,LINE
+        ;CALL PRINTCHAR
         CMP AL,31H
         JE OP5
         CMP AL,32H
