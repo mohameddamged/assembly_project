@@ -100,9 +100,6 @@
         CALL PRINTCHAR
         ;READ CHAR
         CALL READCHAR
-        ;PRINT NEW LINE
-        MOV DL,LINE
-        CALL PRINTCHAR
         CMP AL,31H
         JE OP1
         CMP AL,32H
@@ -220,9 +217,6 @@
         CALL PRINTCHAR
         ;READ CHAR
         CALL READCHAR
-        ;PRINT NEW LINE
-        MOV DL,LINE
-        CALL PRINTCHAR
         CMP AL,31H
         JE OP5
         CMP AL,32H
